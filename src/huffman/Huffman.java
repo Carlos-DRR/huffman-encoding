@@ -27,22 +27,33 @@ public class Huffman {
 			System.out.println(set);
 		}
 	}
-	//decodificar, percorre a �rvore baseado no codigo bin�rio e vai montando o texto
+	//decodificar, percorre a árvore baseado no codigo binário e vai montando o texto
 	public String decode(String codedText) {
 		Node current = this.tree;
 		StringBuilder sb = new StringBuilder();
+		boolean stopRead = false;
 		for(int i = 0; i < codedText.length(); i++) {
-			current = (codedText.charAt(i) == '0') ? current.getLeftBranch(): current.getRightBranch();
-			if(current.getLeftBranch() == null && current.getRightBranch() == null) {
-				sb.append(current.getLetter());
-				current = this.tree;
-			}
+			if (stopRead == false)
+			{
+				current = (codedText.charAt(i) == '0') ? current.getLeftBranch(): current.getRightBranch();
+				if(current.getLeftBranch() == null && current.getRightBranch() == null) {
+					if(current.getLetter() == '▄') {
+						stopRead = true;
+
+						break;
+					}
+					
+					sb.append(current.getLetter());
+					current = this.tree;
+				}
+			}else break;
 		}
 		return sb.toString();
 	}
 	public String encode() {
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < sourceText.length(); i++) {
+		int sourceTextLenght = sourceText.length();
+		for(int i = 0; i < sourceTextLenght; i++) {
 			String code = this.codeTable.get(sourceText.charAt(i));
 			if(code != null) {
 				sb.append(code);
@@ -63,7 +74,7 @@ public class Huffman {
 		if(current.getRightBranch() != null) generateCodeTableRecursive(current.getRightBranch(), path.concat("1"));
 	}
 	public Huffman(String text) {
-		this.sourceText = text;
+		this.sourceText = text + "▄";
 		generateCharSet();
 		generateTree();
 		generateCodeTable();
