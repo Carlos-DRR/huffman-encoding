@@ -5,6 +5,7 @@ public class Conversion {
 		while(size%8 != 0) {
 			size +=1;
 		}
+		
 		return size;
 	}
 	public static String convertByteArrayToString(byte[] byteArray) {

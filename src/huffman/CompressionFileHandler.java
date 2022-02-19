@@ -3,6 +3,7 @@ package huffman;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Scanner;
@@ -52,16 +53,28 @@ public class CompressionFileHandler {
 		saveCompressedFile(path);
 	}
 	
-	public String decompress(String path) {
-        File file = new File(path);
+	public String decompress(String compressedPath, String uncompressedOutPutPath) {
+        File file = new File(compressedPath);
         String finalData="erro";
         try {
 			byte[] bytes = Files.readAllBytes(file.toPath());
 			finalData = this.hf.decode(Conversion.convertByteArrayToString(bytes));
+			
 		} catch (IOException e) {
 			System.out.println("Error: " + e);
 		}
+        this.writeUncompressedFile(finalData, uncompressedOutPutPath);
         return finalData;
 	}
-	
+	public void writeUncompressedFile(String uncompressedText, String path) {
+	    try {
+	        FileWriter myWriter = new FileWriter(path);
+	        myWriter.write(uncompressedText);
+	        myWriter.close();
+	        System.out.println("Arquivo escrito com sucesso");
+	      } catch (IOException e) {
+	        System.out.println("Erro ocorreu");
+	        e.printStackTrace();
+	      }
+	}
 }

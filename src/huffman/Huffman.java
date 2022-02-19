@@ -13,10 +13,10 @@ public class Huffman {
 		double sourceTextSize_bits = sourceText.length() * bitsPerCharacter;
 		double encodedTextSize_bits = encodedText.length();
 		StringBuilder sb = new StringBuilder();
-		
 		sb.append("Size of source text (bits): " + sourceTextSize_bits);
 		sb.append("\nSize of encoded text (bits): " + encodedTextSize_bits);
 		sb.append("\nCompression ratio: " + encodedTextSize_bits / sourceTextSize_bits);
+		
 		return sb.toString();
 	}
 	private void generateCodeTable() {
@@ -39,10 +39,8 @@ public class Huffman {
 				if(current.getLeftBranch() == null && current.getRightBranch() == null) {
 					if(current.getLetter() == '▄') {
 						stopRead = true;
-
 						break;
 					}
-					
 					sb.append(current.getLetter());
 					current = this.tree;
 				}
